@@ -1,4 +1,4 @@
-﻿
+
 Param(
   [string]$domainName,
   [string]$domainUser,
@@ -26,7 +26,11 @@ $CLOUD_SUPPORT_ENABLE = "1"
 $domainHost = $env:COMPUTERNAME
 
 $infaHome = $env:SystemDrive + "\Informatica\9.6.1"
-$insallerHome = $env:SystemDrive + "Informatica\Archive\961HF3_Server_Installer_winem-64t"
+$installerHome = $env:SystemDrive + "\Informatica\Archive\961HF3_Server_Installer_winem-64t"
+
+echo $infaHome
+echo $installerHome
+
 
 # DB Configurations if required
 
@@ -35,7 +39,7 @@ $userInstallDir = $infaHome
 $defaultKeyLocation = $infaHome + "\isp\config\keys"
 
 
-$propertyFile = $insallerHome + "\SilentInput.properties"
+$propertyFile = $installerHome + "\SilentInput.properties"
 
 (gc $propertyFile | %{$_ -replace '^CREATE_DOMAIN=.*$',"CREATE_DOMAIN=1"  `
 `
@@ -85,7 +89,7 @@ $propertyFile = $insallerHome + "\SilentInput.properties"
 
 }) | sc $propertyFile
 
-cd $insallerHome
+cd $installerHome
 
-$installCmd = $insallerHome + "\silentInstall.bat"
-Invoke-Expression $cmd | Out-Null
+$installCmd = $installerHome + "\silentInstall.bat"
+Start-Process $installCmd | Out-Null
