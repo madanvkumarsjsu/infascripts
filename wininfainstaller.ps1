@@ -38,7 +38,7 @@ echo $installerHome
 
 # DB Configurations if required
 
-$dbAddress = $dbHost + ":" + $nodePort
+$dbAddress = $dbHost + ":" + $dbPort
 $userInstallDir = $infaHome
 $defaultKeyLocation = $infaHome + "\isp\config\keys"
 
