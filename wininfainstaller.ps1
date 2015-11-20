@@ -92,8 +92,5 @@ $propertyFile = $installerHome + "\SilentInput.properties"
 cd $installerHome
 
 $installCmd = $installerHome + "\silentInstall.bat"
-<<<<<<< HEAD:winInfaInstaller.ps1
-Start-Process $installCmd | Out-Null
-=======
-Start-Process $installCmd | Out-Null
->>>>>>> origin/master:wininfainstaller.ps1
+
+Invoke-Expression $installCmd | Out-Null
