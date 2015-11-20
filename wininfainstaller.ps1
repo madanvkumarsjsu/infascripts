@@ -21,6 +21,10 @@ Param(
   [int]$masterNodePort
 )
 
+#Adding Windows firewall inbound rule
+netsh  advfirewall firewall add rule name="Informatica_PowerCenter" dir=in action=allow profile=private localport=6005-6113 protocol=TCP
+
+
 $CLOUD_SUPPORT_ENABLE = "1"
 
 $domainHost = $env:COMPUTERNAME
