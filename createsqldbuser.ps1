@@ -5,13 +5,17 @@ Param(
 
 netsh advfirewall firewall add rule name="Informatica_PC_MMSQL" dir=in action=allow profile=any localport=1433 protocol=TCP
 
+mkdir -Path C:\Informatica\Archive\scripts
+
 $connectionString = "Data Source=localhost;Integrated Security=true;Initial Catalog=model;Connect Timeout=3;"
 $sqlConn = new-object ("Data.SqlClient.SqlConnection") $connectionString
 $sqlConn.Open()
 
 $tryCount = 0
-while($sqlConn.State -ne "Open" -And $tryCount -lt 10)
+while($sqlConn.State -ne "Open" -And $tryCount -lt 100)
 {
+    echo "Attempt " + $tryCount | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+
 	Start-Sleep -s 30
 	$sqlConn.Open()
 	$tryCount = $tryCount + 1
@@ -20,13 +24,12 @@ while($sqlConn.State -ne "Open" -And $tryCount -lt 10)
 if ($sqlConn.State -eq 'Open')
 {
 	$sqlConn.Close();
-	"Connection to MSSQL Server succeed."
+	echo "Connection to MSSQL Server succeed." | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
 }
 else
 {
-    "Connection to MSSQL Server failed."
+    echo "Connection to MSSQL Server failed." | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
 }
-
 
 $newLoginQuery = "CREATE LOGIN " + $dbUserName +  " WITH PASSWORD = '" + $dbPassword + "'"
 $newUserQuery = "CREATE USER " + $dbUserName + " FOR LOGIN " + $dbUserName + " WITH DEFAULT_SCHEMA = " + $dbUserName
