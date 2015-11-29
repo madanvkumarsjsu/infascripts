@@ -16,9 +16,7 @@ Param(
   [string]$sitekeyKeyword,
 
   [string]$isMaster = 0,
-
-  [string]$masterNodeHost,
-  [int]$masterNodePort
+  [string]$masterNodeHost
 )
 
 #Adding Windows firewall inbound rule
@@ -68,17 +66,17 @@ $propertyFile = $installerHome + "\SilentInput.properties"
 `
 -replace '^DB_ADDRESS=.*$',"DB_ADDRESS=$dbAddress" `
 `
--replace '^DOMAIN_NAME=.*$',"DOMAIN_NAME=$env:domainName" `
+-replace '^DOMAIN_NAME=.*$',"DOMAIN_NAME=$domainName" `
 `
--replace '^NODE_NAME=.*$',"NODE_NAME=$env:nodeName" `
+-replace '^NODE_NAME=.*$',"NODE_NAME=$nodeName" `
 `
--replace '^DOMAIN_PORT=.*$',"DOMAIN_PORT=$masterNodePort" `
+-replace '^DOMAIN_PORT=.*$',"DOMAIN_PORT=$nodePort" `
 `
 -replace '^JOIN_NODE_NAME=.*$',"JOIN_NODE_NAME=$nodeName" `
 `
 -replace '^JOIN_HOST_NAME=.*$',"JOIN_HOST_NAME=$masterNodeHost" `
 `
--replace '^JOIN_DOMAIN_PORT=.*$',"JOIN_DOMAIN_PORT=$masterNodePort" `
+-replace '^JOIN_DOMAIN_PORT=.*$',"JOIN_DOMAIN_PORT=$nodePort" `
 `
 -replace '^DOMAIN_USER=.*$',"DOMAIN_USER=$domainUser" `
 `
