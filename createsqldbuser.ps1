@@ -7,6 +7,8 @@ netsh advfirewall firewall add rule name="Informatica_PC_MMSQL" dir=in action=al
 
 mkdir -Path C:\Informatica\Archive\scripts
 
+echo "Arguments recieved: " + $dbUserName + ", " + $dbPassword | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+
 $connectionString = "Data Source=localhost;Integrated Security=true;Initial Catalog=model;Connect Timeout=3;"
 $sqlConn = new-object ("Data.SqlClient.SqlConnection") $connectionString
 $sqlConn.Open()
