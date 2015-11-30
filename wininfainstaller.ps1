@@ -94,4 +94,6 @@ cd $installerHome
 
 $installCmd = $installerHome + "\silentInstall.bat"
 
-Invoke-Expression $installCmd | Out-Null
+#Invoke-Expression $installCmd | Out-Null
+
+Start-Process $installCmd -Verb runAs -workingdirectory $installerHome -wait | Out-Null
