@@ -16,7 +16,8 @@ Param(
   [string]$sitekeyKeyword,
 
   [string]$isMaster = 0,
-  [string]$masterNodeHost
+  [string]$masterNodeHost,
+  [string]$osUserName
 )
 
 #Adding Windows firewall inbound rule
@@ -95,5 +96,8 @@ cd $installerHome
 $installCmd = $installerHome + "\silentInstall.bat"
 
 #Invoke-Expression $installCmd | Out-Null
+
+$env:USERNAME = $osUserName
+$env:USERDOMAIN = $domainHost
 
 Start-Process $installCmd -Verb runAs -workingdirectory $installerHome -wait | Out-Null
