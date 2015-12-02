@@ -30,10 +30,6 @@ $domainHost = $env:COMPUTERNAME
 $infaHome = $env:SystemDrive + "\Informatica\9.6.1"
 $installerHome = $env:SystemDrive + "\Informatica\Archive\961HF3_Server_Installer_winem-64t"
 
-echo $infaHome
-echo $installerHome
-
-
 # DB Configurations if required
 
 $dbAddress = $dbHost + ":" + $dbPort
