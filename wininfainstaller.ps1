@@ -1,5 +1,6 @@
 
 Param(
+  [string]$domainHost,
   [string]$domainName,
   [string]$domainUser,
   [string]$domainPassword,
@@ -15,7 +16,7 @@ Param(
 
   [string]$sitekeyKeyword,
 
-  [string]$isMaster = 0,
+  [string]$joinDomain = 0,
   [string]$masterNodeHost,
   [string]$osUserName
 )
@@ -25,10 +26,9 @@ netsh  advfirewall firewall add rule name="Informatica_PowerCenter" dir=in actio
 
 $CLOUD_SUPPORT_ENABLE = "1"
 
-$domainHost = $env:COMPUTERNAME
-
 $infaHome = $env:SystemDrive + "\Informatica\9.6.1"
 $installerHome = $env:SystemDrive + "\Informatica\Archive\961HF3_Server_Installer_winem-64t"
+
 
 # DB Configurations if required
 
@@ -39,9 +39,14 @@ $defaultKeyLocation = $infaHome + "\isp\config\keys"
 
 $propertyFile = $installerHome + "\SilentInput.properties"
 
-(gc $propertyFile | %{$_ -replace '^CREATE_DOMAIN=.*$',"CREATE_DOMAIN=1"  `
+$createDomain = 1
+if($joinDomain -eq 1) {
+    $createDomain = 0
+}
+
+(gc $propertyFile | %{$_ -replace '^CREATE_DOMAIN=.*$',"CREATE_DOMAIN=$createDomain"  `
 `
--replace '^JOIN_DOMAIN=.*$',"JOIN_DOMAIN=$isMaster"  `
+-replace '^JOIN_DOMAIN=.*$',"JOIN_DOMAIN=$joinDomain"  `
 `
 -replace '^CLOUD_SUPPORT_ENABLE=.*$',"CLOUD_SUPPORT_ENABLE=$CLOUD_SUPPORT_ENABLE"  `
 `
