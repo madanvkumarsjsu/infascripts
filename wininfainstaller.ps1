@@ -99,6 +99,6 @@ $installCmd = $installerHome + "\silentInstall.bat"
 #Invoke-Expression $installCmd | Out-Null
 
 $env:USERNAME = $osUserName
-$env:USERDOMAIN = $domainHost
+$env:USERDOMAIN = $env:COMPUTERNAME
 
 Start-Process $installCmd -Verb runAs -workingdirectory $installerHome -wait | Out-Null
