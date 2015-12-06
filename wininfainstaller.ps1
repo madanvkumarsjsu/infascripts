@@ -23,7 +23,6 @@ Param(
 
 #Adding Windows firewall inbound rule
 netsh  advfirewall firewall add rule name="Informatica_PowerCenter" dir=in action=allow profile=any localport=6005-6113 protocol=TCP
-netsh  advfirewall firewall add rule name="Informatica_PowerCenter" dir=in action=allow profile=any localport=6008 protocol=UDP
 
 $CLOUD_SUPPORT_ENABLE = "1"
 
@@ -77,7 +76,7 @@ if($joinDomain -eq 1) {
 `
 -replace '^JOIN_NODE_NAME=.*$',"JOIN_NODE_NAME=$nodeName" `
 `
--replace '^JOIN_HOST_NAME=.*$',"JOIN_HOST_NAME=$masterNodeHost" `
+-replace '^JOIN_HOST_NAME=.*$',"JOIN_HOST_NAME=$env:COMPUTERNAME" `
 `
 -replace '^JOIN_DOMAIN_PORT=.*$',"JOIN_DOMAIN_PORT=$nodePort" `
 `
