@@ -23,6 +23,7 @@ Param(
 
 #Adding Windows firewall inbound rule
 netsh  advfirewall firewall add rule name="Informatica_PowerCenter" dir=in action=allow profile=any localport=6005-6113 protocol=TCP
+netsh  advfirewall firewall add rule name="Informatica_PowerCenter" dir=in action=allow profile=any localport=6008 protocol=UDP
 
 $CLOUD_SUPPORT_ENABLE = "1"
 
