@@ -58,7 +58,7 @@ if($joinDomain -eq 1) {
 `
 -replace '^PASS_PHRASE_PASSWD=.*$',"PASS_PHRASE_PASSWD=$sitekeyKeyword"  `
 `
--replace '^SERVES_AS_GATEWAY=.*$',"SERVES_AS_GATEWAY=0" `
+-replace '^SERVES_AS_GATEWAY=.*$',"SERVES_AS_GATEWAY=1" `
 `
 -replace '^DB_TYPE=.*$',"DB_TYPE=$dbTYPE" `
 `
