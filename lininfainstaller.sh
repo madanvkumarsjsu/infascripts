@@ -1,7 +1,8 @@
 #!/bin/sh
 
-echo $HOME
-who am i
-pwd
+echo $HOME >> $HOME/customext.log
+who am i >> $HOME/customext.log
+pwd >> $HOME/customext.log
+
 
 
