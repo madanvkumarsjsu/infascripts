@@ -31,8 +31,8 @@ $installerHome = $env:SystemDrive + "\Informatica\Archive\961HF3_Server_Installe
 
 
 # DB Configurations if required
-
 $dbAddress = $dbHost + ":" + $dbPort
+
 $userInstallDir = $infaHome
 $defaultKeyLocation = $infaHome + "\isp\config\keys"
 
