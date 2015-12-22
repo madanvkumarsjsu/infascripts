@@ -1,7 +1,6 @@
 #!/bin/sh
 
 #Script arguments
-
 domainHost=$1
 domainName=$2
 domainUser=$3
@@ -22,6 +21,7 @@ joinDomain=$14
 masterNodeHost=$15
 osUserName=$16
 
+#Usage
 if [ $# -ne 16 ]
 then
 	lininfainstaller.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain masterNodeHost osUserName
@@ -34,9 +34,9 @@ hostName=`hostname`
 
 
 infainstallerloc=/home/$osUserName/Informatica/Archive/server
-infainstallionloc=/home/$osUserName/Informatica/10.0.0
+infainstallionloc=\/home\/$osUserName\/Informatica\/10.0.0
 
-defaultKeyLocation=$infainstallionloc/isp/config/keys
+defaultKeyLocation=$infainstallionloc\/isp\/config\/keys
 
 createDomain=1
 if [ $joinDomain -eq 1 ]
