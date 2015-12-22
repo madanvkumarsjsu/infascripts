@@ -34,9 +34,9 @@ hostName=`hostname`
 
 
 infainstallerloc=/home/$osUserName/Informatica/Archive/server
-infainstallionloc=\/home\/$osUserName\/Informatica\/10.0.0
+infainstallionloc=\\/home\\/$osUserName\\/Informatica\\/10.0.0
 
-defaultKeyLocation=$infainstallionloc\/isp\/config\/keys
+defaultKeyLocation=$infainstallionloc\\/isp\\/config\\/keys
 
 createDomain=1
 if [ $joinDomain -eq 1 ]
