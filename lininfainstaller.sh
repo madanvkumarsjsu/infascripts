@@ -93,7 +93,9 @@ sed -i s/^DOMAIN_CNFRM_PSSWD=.*/DOMAIN_CNFRM_PSSWD=$domainPassword/ $infainstall
 cd $infainstallerloc
 echo Y Y | sh silentinstall.sh 
 
-chown -R $osUserName $infainstallionloc
+infainstallionlocown=/home/$osUserName/Informatica
+
+chown -R $osUserName $infainstallionlocown
 
 
 
