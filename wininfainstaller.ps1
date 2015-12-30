@@ -28,7 +28,7 @@ netsh  advfirewall firewall add rule name="Informatica_PowerCenter" dir=in actio
 $CLOUD_SUPPORT_ENABLE = "1"
 
 $infaHome = $env:SystemDrive + "\Informatica\10.0.0"
-$installerHome = $env:SystemDrive + "\Informatica\Archive\961HF3_Server_Installer_winem-64t"
+$installerHome = $env:SystemDrive + "\Informatica\Archive\1000_Server_Installer_winem-64t"
 
 
 # DB Configurations if required
