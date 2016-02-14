@@ -18,13 +18,12 @@ dbPort=$12
 sitekeyKeyword=$13
 
 joinDomain=$14
-masterNodeHost=$15
-osUserName=$16
+osUserName=$15
 
 #Usage
-if [ $# -ne 16 ]
+if [ $# -ne 15 ]
 then
-	lininfainstaller.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain masterNodeHost osUserName
+	lininfainstaller.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain  osUserName
 fi
 
 CLOUD_SUPPORT_ENABLE=1
@@ -96,7 +95,3 @@ echo Y Y | sh silentinstall.sh
 infainstallionlocown=/home/$osUserName/Informatica
 
 chown -R $osUserName $infainstallionlocown
-
-
-
-

@@ -1,6 +1,10 @@
 Param(
   [string]$dbUserName,
-  [string]$dbPassword
+  [string]$dbPassword,
+  [string]$dbServerName,
+  [string]$dbName,
+  [string]$adbUser,
+  [string]$adbPassword
 )
 
 netsh advfirewall firewall add rule name="Informatica_PC_MMSQL" dir=in action=allow profile=any localport=1433 protocol=TCP
@@ -40,7 +44,17 @@ $updateUserRoleQuery = "ALTER ROLE db_datareader ADD MEMBER " + $dbUserName + ";
                         "ALTER ROLE db_ddladmin ADD MEMBER " + $dbUserName
 $newSchemaQuery = "CREATE SCHEMA " + $dbUserName + " AUTHORIZATION " + $dbUserName
 
-Invoke-Sqlcmd -ServerInstance '(local)' -Database 'Model' -Query $newLoginQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
-Invoke-Sqlcmd -ServerInstance '(local)' -Database 'Model' -Query $newUserQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
-Invoke-Sqlcmd -ServerInstance '(local)' -Database 'Model' -Query $updateUserRoleQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
-Invoke-Sqlcmd -ServerInstance '(local)' -Database 'Model' -Query $newSchemaQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+if([string]::IsNullOrEmpty($adbUser) -Or [string]::IsNullOrEmpty($adbPassword)) 
+{
+    Invoke-Sqlcmd -ServerInstance '(local)' -Database 'Model' -Query $newLoginQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+    Invoke-Sqlcmd -ServerInstance '(local)' -Database 'Model' -Query $newUserQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+    Invoke-Sqlcmd -ServerInstance '(local)' -Database 'Model' -Query $updateUserRoleQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+    Invoke-Sqlcmd -ServerInstance '(local)' -Database 'Model' -Query $newSchemaQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+}
+else
+{
+    Invoke-Sqlcmd -ServerInstance $dbServerName -Username $adbUser -Password $dbPassword -Database $dbName -Query $newLoginQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+    Invoke-Sqlcmd -ServerInstance $dbServerName -Username $adbUser -Password $dbPassword -Database $dbName -Query $newUserQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+    Invoke-Sqlcmd -ServerInstance $dbServerName -Username $adbUser -Password $dbPassword -Database $dbName -Query $updateUserRoleQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+    Invoke-Sqlcmd -ServerInstance $dbServerName -Username $adbUser -Password $dbPassword -Database $dbName -Query $newSchemaQuery | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+}
