@@ -19,8 +19,15 @@ Param(
   [string]$joinDomain = 0,
   [string]$masterNodeHost,
   [string]$osUserName,
-  [string]$infaEdition
+  [string]$infaEdition,
+
+  [string]$storageName,
+  [string]$storageKey
 )
+
+#Setting Java in path
+$env:JAVA_HOME="C:\Program Files\java"
+$env:Path=$env:JAVA_HOME+"\bin;" + $env:Path
 
 #Adding Windows firewall inbound rule
 netsh  advfirewall firewall add rule name="Informatica_PowerCenter" dir=in action=allow profile=any localport=6005-6113 protocol=TCP
@@ -29,6 +36,7 @@ $CLOUD_SUPPORT_ENABLE = "1"
 
 $infaHome = $env:SystemDrive + "\Informatica\10.0.0"
 $installerHome = $env:SystemDrive + "\Informatica\Archive\1000_Server_Installer_winem-64t"
+$utilityHome = $env:SystemDrive + "\Informatica\Archive\scripting"
 
 
 # DB Configurations if required
@@ -43,7 +51,13 @@ $propertyFile = $installerHome + "\SilentInput.properties"
 $createDomain = 1
 if($joinDomain -eq 1) {
     $createDomain = 0
+} else {
+    cd $utilityHome
+    java -jar iadutility.jar createAzureFileShare -storageaccesskey $storageKey -storagename $storageName
 }
+
+#Mounting azure shared file drive
+net use I: "\\" + $storageName + ".file.core.windows.net\infaaeshare /u:" + $storageName + " " + $storageKey
 
 (gc $propertyFile | %{$_ -replace '^CREATE_DOMAIN=.*$',"CREATE_DOMAIN=$createDomain"  `
 `
