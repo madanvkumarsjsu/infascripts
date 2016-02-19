@@ -117,4 +117,5 @@ echo Y Y | sh silentinstall.sh
 
 infainstallionlocown=/home/$osUserName/Informatica
 
-chown -R $osUserName $infainstallionlocown /mnt/infaaeshare
+chown -R $osUserName $infainstallionlocown 
+chown -R $osUserName /mnt/infaaeshare
