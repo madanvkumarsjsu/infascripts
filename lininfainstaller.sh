@@ -49,6 +49,8 @@ export JAVA_HOME
 PATH="$JAVA_HOME/bin":"$PATH"
 export PATH
 
+chmod -R 777 $JAVA_HOME
+
 createDomain=1
 if [ $joinDomain -eq 1 ]
 then
