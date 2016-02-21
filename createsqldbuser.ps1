@@ -7,7 +7,7 @@ netsh advfirewall firewall add rule name="Informatica_PC_MMSQL" dir=in action=al
 
 mkdir -Path C:\Informatica\Archive\scripts
 
-echo "Arguments recieved: " + $dbUserName + ", " + $dbPassword | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+echo Arguments recieved: $dbUserName and $dbPassword | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
 
 $connectionString = "Data Source=localhost;Integrated Security=true;Initial Catalog=model;Connect Timeout=3;"
 $sqlConn = new-object ("Data.SqlClient.SqlConnection") $connectionString
@@ -16,7 +16,7 @@ $sqlConn.Open()
 $tryCount = 0
 while($sqlConn.State -ne "Open" -And $tryCount -lt 100)
 {
-    echo "Attempt " + $tryCount | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+    echo Attempt $tryCount | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
 
 	Start-Sleep -s 30
 	$sqlConn.Open()
@@ -31,6 +31,7 @@ if ($sqlConn.State -eq 'Open')
 else
 {
     echo "Connection to MSSQL Server failed." | Out-File -Append C:\Informatica\Archive\scripts\createdbusers.log
+    exit 255
 }
 
 $newLoginQuery = "CREATE LOGIN " + $dbUserName +  " WITH PASSWORD = '" + $dbPassword + "'"
