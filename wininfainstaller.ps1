@@ -56,6 +56,9 @@ if($joinDomain -eq 1) {
     java -jar iadutility.jar createAzureFileShare -storageaccesskey $storageKey -storagename $storageName
 }
 
+$env:USERNAME = $osUserName
+$env:USERDOMAIN = $env:COMPUTERNAME
+
 #Mounting azure shared file drive
 $mountAuth = "cmdkey /add:" + $storageName + ".file.core.windows.net\infaaeshare /user:" + $storageName + " /pass:" + $storageKey
 $mountCmd = "net use I: \\" + $storageName + ".file.core.windows.net\infaaeshare /P:Yes /savecred" 
@@ -114,8 +117,5 @@ Invoke-Expression $mountCmd
 cd $installerHome
 
 $installCmd = $installerHome + "\silentInstall.bat"
-
-$env:USERNAME = $osUserName
-$env:USERDOMAIN = $env:COMPUTERNAME
 
 Start-Process $installCmd -Verb runAs -workingdirectory $installerHome -wait | Out-Null
