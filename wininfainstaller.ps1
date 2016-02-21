@@ -57,7 +57,10 @@ if($joinDomain -eq 1) {
 }
 
 #Mounting azure shared file drive
-$mountCmd = "net use I: \\" + $storageName + ".file.core.windows.net\infaaeshare /u:" + $storageName + " " + $storageKey
+$mountAuth = "cmdkey /add:" + $storageName + ".file.core.windows.net\infaaeshare /user:" + $storageName + " /pass:" + $storageKey
+$mountCmd = "net use I: \\" + $storageName + ".file.core.windows.net\infaaeshare /P:Yes /savecred" 
+
+Invoke-Expression $mountAuth
 Invoke-Expression $mountCmd
 
 (gc $propertyFile | %{$_ -replace '^CREATE_DOMAIN=.*$',"CREATE_DOMAIN=$createDomain"  `
