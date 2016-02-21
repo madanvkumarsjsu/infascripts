@@ -49,6 +49,8 @@ $propertyFile = $installerHome + "\SilentInput.properties"
 $createDomain = 1
 if($joinDomain -eq 1) {
     $createDomain = 0
+    # This is buffer time for master node to start
+    Start-Sleep -s 180
 } else {
     cd $utilityHome
     java -jar iadutility.jar createAzureFileShare -storageaccesskey $storageKey -storagename $storageName
@@ -56,7 +58,7 @@ if($joinDomain -eq 1) {
 
 #Mounting azure shared file drive
 $mountCmd = "net use I: \\" + $storageName + ".file.core.windows.net\infaaeshare /u:" + $storageName + " " + $storageKey
-Invoke-Expression $mountCmd | Out-Null
+Invoke-Expression $mountCmd
 
 (gc $propertyFile | %{$_ -replace '^CREATE_DOMAIN=.*$',"CREATE_DOMAIN=$createDomain"  `
 `
