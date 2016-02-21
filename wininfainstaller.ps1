@@ -50,7 +50,7 @@ $createDomain = 1
 if($joinDomain -eq 1) {
     $createDomain = 0
     # This is buffer time for master node to start
-    Start-Sleep -s 180
+    Start-Sleep -s 300
 } else {
     cd $utilityHome
     java -jar iadutility.jar createAzureFileShare -storageaccesskey $storageKey -storagename $storageName
