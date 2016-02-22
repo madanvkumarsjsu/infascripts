@@ -60,11 +60,8 @@ $env:USERNAME = $osUserName
 $env:USERDOMAIN = $env:COMPUTERNAME
 
 #Mounting azure shared file drive
-$mountAuth = "cmdkey /add:" + $storageName + ".file.core.windows.net\infaaeshare /user:" + $storageName + " /pass:" + $storageKey
-$mountCmd = "net use I: \\" + $storageName + ".file.core.windows.net\infaaeshare" 
-
-Invoke-Expression $mountAuth
-Invoke-Expression $mountCmd
+cmdkey /add:$storageName.file.core.windows.net\infaaeshare /user:$storageName /pass $storageKey
+net use I: \\$storageName.file.core.windows.net\infaaeshare
 
 (gc $propertyFile | %{$_ -replace '^CREATE_DOMAIN=.*$',"CREATE_DOMAIN=$createDomain"  `
 `
