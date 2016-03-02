@@ -37,14 +37,14 @@ dbAddress=$dbHost:$dbPort
 hostName=`hostname`
 
 
-infainstallerloc=/home/$osUserName/Informatica/Archive/server
+infainstallerloc=/opt/Informatica/Archive/server
 infainstallionloc=\\/home\\/$osUserName\\/Informatica\\/10.0.0
 
 defaultKeyLocation=$infainstallionloc\\/isp\\/config\\/keys
 
-utilityHome=/home/$osUserName/Informatica/Archive/Utilities
+utilityHome=/opt/Informatica/Archive/Utilities
 
-JAVA_HOME="/home/$osUserName/Informatica/Archive/server/source/java"
+JAVA_HOME="/opt/Informatica/Archive/server/source/java"
 export JAVA_HOME		
 PATH="$JAVA_HOME/bin":"$PATH"
 export PATH
@@ -119,5 +119,6 @@ echo Y Y | sh silentinstall.sh
 
 infainstallionlocown=/home/$osUserName/Informatica
 
-chown -R $osUserName $infainstallionlocown 
+chown -R $osUserName $infainstallionlocown
+chown -R $osUserName /opt/Informatica 
 chown -R $osUserName /mnt/infaaeshare
