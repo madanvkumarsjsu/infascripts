@@ -20,11 +20,16 @@ sitekeyKeyword=$13
 joinDomain=$14
 osUserName=$15
 
+storageName=$16
+storageKey=$17
+
 #Usage
-if [ $# -ne 15 ]
+if [ $# -ne 17 ]
 then
-	lininfainstaller.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain  osUserName
+	lininfainstaller.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain  osUserName storageName storageKey
 fi
+
+apt-get update
 
 CLOUD_SUPPORT_ENABLE=1
 
@@ -37,11 +42,27 @@ infainstallionloc=\\/home\\/$osUserName\\/Informatica\\/10.0.0
 
 defaultKeyLocation=$infainstallionloc\\/isp\\/config\\/keys
 
+utilityHome=/home/$osUserName/Informatica/Archive/Utilities
+
+JAVA_HOME="/home/$osUserName/Informatica/Archive/server/source/java"
+export JAVA_HOME		
+PATH="$JAVA_HOME/bin":"$PATH"
+export PATH
+
 createDomain=1
 if [ $joinDomain -eq 1 ]
 then
     createDomain=0
+else
+	cd $utilityHome
+    java -jar iadutility.jar createAzureFileShare -storageaccesskey $storageKey -storagename $storageName
 fi
+
+apt-get install cifs-utils
+mountDir=/mnt/infaaeshare
+mkdir $mountDir
+mount -t cifs //$storageName.file.core.windows.net/infaaeshare $mountDir -o vers=3.0,username=$storageName,password=$storageKey,dir_mode=0777,file_mode=0777
+echo //$storageName.file.core.windows.net/infaaeshare $mountDir cifs vers=3.0,username=$storageName,password=$storageKey,dir_mode=0777,file_mode=0777 >> /etc/fstab
 
 sed -i s/^USER_INSTALL_DIR=.*/USER_INSTALL_DIR=$infainstallionloc/ $infainstallerloc/SilentInput.properties
 
@@ -94,4 +115,4 @@ echo Y Y | sh silentinstall.sh
 
 infainstallionlocown=/home/$osUserName/Informatica
 
-chown -R $osUserName $infainstallionlocown
+chown -R $osUserName $infainstallionlocown /mnt/infaaeshare

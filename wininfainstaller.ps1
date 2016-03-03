@@ -19,7 +19,10 @@ Param(
   [string]$joinDomain = 0,
   [string]$masterNodeHost,
   [string]$osUserName,
-  [string]$infaEdition
+  [string]$infaEdition,
+
+  [string]$storageName,
+  [string]$storageKey
 )
 
 #Adding Windows firewall inbound rule
@@ -29,7 +32,11 @@ $CLOUD_SUPPORT_ENABLE = "1"
 
 $infaHome = $env:SystemDrive + "\Informatica\10.0.0"
 $installerHome = $env:SystemDrive + "\Informatica\Archive\1000_Server_Installer_winem-64t"
+$utilityHome = $env:SystemDrive + "\Informatica\Archive\scripting"
 
+#Setting Java in path
+$env:JAVA_HOME= $installerHome + "\source\java"
+$env:Path=$env:JAVA_HOME+"\bin;" + $env:Path
 
 # DB Configurations if required
 $dbAddress = $dbHost + ":" + $dbPort
@@ -37,13 +44,19 @@ $dbAddress = $dbHost + ":" + $dbPort
 $userInstallDir = $infaHome
 $defaultKeyLocation = $infaHome + "\isp\config\keys"
 
-
 $propertyFile = $installerHome + "\SilentInput.properties"
 
 $createDomain = 1
 if($joinDomain -eq 1) {
     $createDomain = 0
+} else {
+    cd $utilityHome
+    java -jar iadutility.jar createAzureFileShare -storageaccesskey $storageKey -storagename $storageName
 }
+
+#Mounting azure shared file drive
+$mountCmd = "net use I: \\" + $storageName + ".file.core.windows.net\infaaeshare /u:" + $storageName + " " + $storageKey
+Invoke-Expression $mountCmd | Out-Null
 
 (gc $propertyFile | %{$_ -replace '^CREATE_DOMAIN=.*$',"CREATE_DOMAIN=$createDomain"  `
 `
@@ -96,8 +109,6 @@ if($joinDomain -eq 1) {
 cd $installerHome
 
 $installCmd = $installerHome + "\silentInstall.bat"
-
-#Invoke-Expression $installCmd | Out-Null
 
 $env:USERNAME = $osUserName
 $env:USERDOMAIN = $env:COMPUTERNAME
