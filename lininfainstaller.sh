@@ -37,22 +37,26 @@ dbAddress=$dbHost:$dbPort
 hostName=`hostname`
 
 
-infainstallerloc=/home/$osUserName/Informatica/Archive/server
+infainstallerloc=/opt/Informatica/Archive/server
 infainstallionloc=\\/home\\/$osUserName\\/Informatica\\/10.0.0
 
 defaultKeyLocation=$infainstallionloc\\/isp\\/config\\/keys
 
-utilityHome=/home/$osUserName/Informatica/Archive/Utilities
+utilityHome=/opt/Informatica/Archive/Utilities
 
-JAVA_HOME="/home/$osUserName/Informatica/Archive/server/source/java"
+JAVA_HOME="/opt/Informatica/Archive/server/source/java"
 export JAVA_HOME		
 PATH="$JAVA_HOME/bin":"$PATH"
 export PATH
+
+chmod -R 777 $JAVA_HOME
 
 createDomain=1
 if [ $joinDomain -eq 1 ]
 then
     createDomain=0
+	# This is buffer time for master node to start
+	sleep 300
 else
 	cd $utilityHome
     java -jar iadutility.jar createAzureFileShare -storageaccesskey $storageKey -storagename $storageName
@@ -115,4 +119,6 @@ echo Y Y | sh silentinstall.sh
 
 infainstallionlocown=/home/$osUserName/Informatica
 
-chown -R $osUserName $infainstallionlocown /mnt/infaaeshare
+chown -R $osUserName $infainstallionlocown
+chown -R $osUserName /opt/Informatica 
+chown -R $osUserName /mnt/infaaeshare
